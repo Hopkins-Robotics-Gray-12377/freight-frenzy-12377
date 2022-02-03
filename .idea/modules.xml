@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/freight-frenzy-12377.iml" filepath="$PROJECT_DIR$/.idea/modules/freight-frenzy-12377.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/FtcRobotController/freight-frenzy-12377.FtcRobotController.iml" filepath="$PROJECT_DIR$/.idea/modules/FtcRobotController/freight-frenzy-12377.FtcRobotController.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MeepMeepTesting/freight-frenzy-12377.MeepMeepTesting.iml" filepath="$PROJECT_DIR$/.idea/modules/MeepMeepTesting/freight-frenzy-12377.MeepMeepTesting.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TeamCode/freight-frenzy-12377.TeamCode.iml" filepath="$PROJECT_DIR$/.idea/modules/TeamCode/freight-frenzy-12377.TeamCode.iml" />
     </modules>
   </component>

@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+
 
 public class Bot {
     //////////////////
@@ -17,33 +19,40 @@ public class Bot {
 
     // Control Hub - 173, now
     /*
-    0 - fl
-    1 - bl
-    2 - carousel motor
-    3 - intake
+    Control Hub
 
+    Motors:
+    0 - front left
+    1 - front right
+    2 - intake motor
+    3 - carousel motor
 
     Servo:
-    0 - holder
+    0 - holder for game pieces
+
+    Expansion Hub
+
+    Motors:
+    0 - back right
+    1 - back left
+    2 - slide motor
+
 
      */
 
-    // Expansion HUb - 2
-    /*
-    0 - br
-    1 - fr
-    2 - linear slide
-     */
 
 
     // constants for power, servo positions, etc.
     final double intakePower = .8;
     final double outtakePower = -1 * intakePower;
 
-    final double holderPickup = 0;
+    final double holderPickup = .06;
     final double holderDump = 1;
 
     final double carouselPower = 1;
+
+    public int initialSlidePos = 0;
+    public int topSlidePos = 0;
 
 
     //DRIVE//
@@ -75,6 +84,71 @@ public class Bot {
     public void bot (){
     }
 
+
+    /* Initialize standard Hardware interfaces */
+    public void testInit(HardwareMap hwMap) {
+        //////////////////////////////////
+        /* RETRIEVING STUFF FROM PHONES */
+        //////////////////////////////////
+
+
+        //Carousel//
+        carousel = hwMap.dcMotor.get("carousel");
+        carousel.setDirection(DcMotor.Direction.FORWARD);
+        carousel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //Intake//
+        intake = hwMap.dcMotor.get("intake");
+        intake.setDirection(DcMotor.Direction.FORWARD);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //Slides//
+        slides = hwMap.dcMotor.get("slides");
+        slides.setDirection(DcMotor.Direction.FORWARD);
+        slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //holder//
+        holder = hwMap.servo.get("holder");
+
+        //IMU//
+        imu = hwMap.get(BNO055IMU.class, "imu");
+    }
+
+    public void autoInit(HardwareMap hwMap) {
+        //////////////////////////////////
+        /* RETRIEVING STUFF FROM PHONES */
+        //////////////////////////////////
+
+        //DRIVE//
+        SampleMecanumDrive drive = new SampleMecanumDrive(hwMap);
+
+        //Carousel//
+        carousel = hwMap.dcMotor.get("carousel");
+        carousel.setDirection(DcMotor.Direction.FORWARD);
+        carousel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //Intake//
+        intake = hwMap.dcMotor.get("intake");
+        intake.setDirection(DcMotor.Direction.FORWARD);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //Slides//
+        slides = hwMap.dcMotor.get("slides");
+        slides.setDirection(DcMotor.Direction.REVERSE);
+        slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        initialSlidePos = slides.getCurrentPosition();
+        topSlidePos  = initialSlidePos + 4200;
+//        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //holder//
+        holder = hwMap.servo.get("holder");
+
+        //IMU//
+        imu = hwMap.get(BNO055IMU.class, "imu");
+    }
+
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap hwMap) {
         //////////////////////////////////
@@ -86,10 +160,10 @@ public class Bot {
         backLeft    = hwMap.dcMotor.get("bl");
         backRight   = hwMap.dcMotor.get("br");
         frontRight  = hwMap.dcMotor.get("fr");
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.FORWARD);
-        backRight.setDirection(DcMotor.Direction.FORWARD);
-        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft.setDirection(DcMotor.Direction.FORWARD);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -107,8 +181,12 @@ public class Bot {
 
         //Slides//
         slides = hwMap.dcMotor.get("slides");
-        slides.setDirection(DcMotor.Direction.FORWARD);
+        slides.setDirection(DcMotor.Direction.REVERSE);
         slides.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        initialSlidePos = slides.getCurrentPosition();
+        topSlidePos  = initialSlidePos + 4200;
+//        slides.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        slides.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //holder//
         holder = hwMap.servo.get("holder");
@@ -135,9 +213,41 @@ public class Bot {
         holder.setPosition(holderPickup);
     }
 
+    public void holderHold() {
+        holder.setPosition(.3);
+    }
+
     public void moveCarousel() {
         carousel.setPower(carouselPower);
     }
+
+    public void reverseCarousel() {carousel.setPower(-carouselPower);}
+
+    public void autoDepositSlides() {
+        while (slides.getCurrentPosition() < topSlidePos) {
+            if (slides.getCurrentPosition() > initialSlidePos + 1000) {
+                holderHold();
+            }
+            slides.setPower(.4);
+        }
+
+
+        if (slides.getCurrentPosition() >= topSlidePos) {
+            slides.setPower(0);
+            holderDeposit();
+        }
+    }
+
+    public void autoLowerSlides() {
+        holderNormal();
+
+        while (slides.getCurrentPosition() > initialSlidePos) {
+            slides.setPower(-.1);
+        }
+
+        slides.setPower(0);
+    }
+
 
     public void mecanumDrive(double pX, double pY, double pRot){
         frontLeft.setPower(pY + pRot);

@@ -34,14 +34,40 @@ public class TestTeleOp extends LinearOpMode {
 
 
         while(opModeIsActive()){
+
             roboDrive();
             intake();
             carousel();
-//            slides();
+            slides();
+
+            holder();
+
+            telemetry.addData("Holder position", robot.holder.getPosition());
 
             telemetry.update();
         }
     }
+
+    public void holder() {
+//
+//        if (robot.slides.getCurrentPosition() < robot.topSlidePos - 800 && robot.slides.getCurrentPosition() > robot.initialSlidePos + 800) {
+//            robot.holderHold();
+//        }
+
+
+        if (gamepad1.y) {
+            robot.holderHold();
+        }
+
+        if (gamepad1.right_bumper) {
+            robot.holderDeposit();
+        }
+
+        if (gamepad1.left_bumper) {
+            robot.holderNormal();
+        }
+    }
+
 
     public void intake() {
         if (gamepad1.a) {
@@ -62,12 +88,32 @@ public class TestTeleOp extends LinearOpMode {
     }
 
     public void slides() {
-        if (gamepad1.dpad_up) {
-            robot.slides.setPower(.1);
-        } else if (gamepad1.dpad_down) {
-            robot.slides.setPower(-.1);
-        } else if (gamepad1.y) {
+        telemetry.addData("Slide Position: ", robot.slides.getCurrentPosition());
+        telemetry.addData("Initial Slide Position: ", robot.initialSlidePos);
+
+        double slidePower = 0;
+
+        if (gamepad1.dpad_up && robot.slides.getCurrentPosition() < robot.topSlidePos) {
+            slidePower = .4;
+        } else if (gamepad1.dpad_down && robot.slides.getCurrentPosition() > robot.initialSlidePos) {
+            slidePower = -.1;
+        } else if (robot.slides.getCurrentPosition() <= robot.initialSlidePos || robot.slides.getCurrentPosition() >= robot.topSlidePos) {
+            slidePower = 0;
+        }
+
+        telemetry.addData("Slide Power", slidePower);
+
+        robot.slides.setPower(slidePower);
+    }
+
+
+    private void runSlidesDown() {
+        int slidePosition = robot.slides.getCurrentPosition();
+
+        if (slidePosition <= robot.initialSlidePos) {
             robot.slides.setPower(0);
+        } else {
+            robot.slides.setPower(.1);
         }
     }
 
@@ -81,33 +127,33 @@ public class TestTeleOp extends LinearOpMode {
         double rotMultiplier = 0.6;
         double theta = Math.atan2(stick_y, stick_x); //Arctan2 doesn't have bad range restriction
 
-        if (gamepad1.dpad_up || gamepad1.dpad_right || gamepad1.dpad_left || gamepad1.dpad_down) {
+//        if (gamepad1.dpad_up || gamepad1.dpad_right || gamepad1.dpad_left || gamepad1.dpad_down) {
+//
+//            double mag = 0.25;
+//            if (gamepad1.dpad_up) {
+//                pX = mag;
+//                pY = -mag;
+//            } else if (gamepad1.dpad_left) {
+//                pX = 2*mag;
+//                pY = 2*mag;
+//            } else if (gamepad1.dpad_down) {
+//                pX = -mag;
+//                pY = mag;
+//            } else if (gamepad1.dpad_right) {
+//                pX = -2*mag;
+//                pY = -2*mag;
+//            }
+//
+//            pRot = -rotMultiplier*(gamepad1.right_trigger-gamepad1.left_trigger);
+//            robot.mecanumDrive(pX, pY, -pRot);
+//        }
 
-            double mag = 0.25;
-            if (gamepad1.dpad_up) {
-                pX = mag;
-                pY = -mag;
-            } else if (gamepad1.dpad_left) {
-                pX = 2*mag;
-                pY = 2*mag;
-            } else if (gamepad1.dpad_down) {
-                pX = -mag;
-                pY = mag;
-            } else if (gamepad1.dpad_right) {
-                pX = -2*mag;
-                pY = -2*mag;
-            }
+//        else {
 
-            pRot = -rotMultiplier*(gamepad1.right_trigger-gamepad1.left_trigger);
-            robot.mecanumDrive(pX, pY, -pRot);
-        }
-
-        else {
-
-            pRot = -0.6 * rotMultiplier*(gamepad1.right_stick_x);
+            pRot = -0.6 * rotMultiplier*(-gamepad1.right_stick_x);
 
             if (gamepad1.left_stick_y == 0 && gamepad1.left_stick_x == 0) {
-                pRot = -rotMultiplier*(gamepad1.right_stick_x);
+                pRot = -rotMultiplier*(-gamepad1.right_stick_x);
             }
 
             double gyroAngle = 0;
@@ -139,7 +185,7 @@ public class TestTeleOp extends LinearOpMode {
             robot.mecanumDrive(pX, pY, -pRot);
 
 
-        }
+//        }
 
     }
 
