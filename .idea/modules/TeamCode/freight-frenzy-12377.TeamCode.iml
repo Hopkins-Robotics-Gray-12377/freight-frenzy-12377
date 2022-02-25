@@ -88,8 +88,8 @@
     <orderEntry type="library" name="Gradle: org.firstinspires.ftc:FtcCommon:7.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: org.firstinspires.ftc:OnBotJava:7.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: org.firstinspires.ftc:gameAssets-FreightFrenzy:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: org.openftc:easyopencv:1.4.4@aar" level="project" />
-    <orderEntry type="library" name="Gradle: org.openftc:opencv-repackaged:4.1.0-C@aar" level="project" />
+    <orderEntry type="library" name="Gradle: org.openftc:easyopencv:1.5.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: org.openftc:opencv-repackaged:4.5.3-B@aar" level="project" />
     <orderEntry type="module" module-name="freight-frenzy-12377.FtcRobotController" />
   </component>
 </module>

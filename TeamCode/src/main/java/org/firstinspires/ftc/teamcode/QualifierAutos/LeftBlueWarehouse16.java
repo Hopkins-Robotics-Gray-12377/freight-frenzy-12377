@@ -21,11 +21,11 @@ public class LeftBlueWarehouse16 extends LinearOpMode {
 //    Pose2d startPose = new Pose2d(-62.0, -18.0, 0.0);
 
 
-    private Pose2d startPose = new Pose2d(62.5, 34.0, 0.0);
+    private Pose2d startPose = new Pose2d(62.5, -12.0, Math.toRadians(-90.0));
 
-    private Pose2d depositPose = new Pose2d(25.0, -8.0, Math.toRadians(-90.0));
+    private Pose2d depositPose = new Pose2d(25.0, -5.0, Math.toRadians(-90.0));
 
-    private Pose2d mineralPark1 = new Pose2d(50.0, -10.0, Math.toRadians(-90.0));
+    private Pose2d mineralPark1 = new Pose2d(42.0, -10.0, Math.toRadians(-90.0));
 
     private Pose2d mineralFinalPark = new Pose2d(50.0, -50.0, Math.toRadians(-90.0));
 
@@ -66,7 +66,7 @@ public class LeftBlueWarehouse16 extends LinearOpMode {
                 .build();
 
         Trajectory finalParkInMineral = drive.trajectoryBuilder(parkInMineral1.end())
-                .forward(40)
+                .forward(45)
                 .build();
 
 
@@ -80,6 +80,7 @@ public class LeftBlueWarehouse16 extends LinearOpMode {
 
         if (opModeIsActive()) {
             currentLeftRedState = RightRed.Deposit;
+            robo.autoRaiseSlidesALittle();
             drive.followTrajectoryAsync(deposit);
 
             while (opModeIsActive() && !isStopRequested()) {
@@ -105,7 +106,7 @@ public class LeftBlueWarehouse16 extends LinearOpMode {
                     case MineralPark1:
 
                         if (!drive.isBusy()) {
-                            robo.autoLowerSlides();
+                            robo.autoLowerSlidesALittle();
                             drive.followTrajectoryAsync(parkInMineral1);
                             currentLeftRedState = RightRed.MineralParkFinal;
                         }
@@ -124,6 +125,7 @@ public class LeftBlueWarehouse16 extends LinearOpMode {
                         break;
 
                     case Park:
+                        robo.autoLowerSlides();
                         break;
 
 

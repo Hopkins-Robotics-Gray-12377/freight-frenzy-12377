@@ -20,6 +20,15 @@ public class RightRedWarehouse16 extends LinearOpMode {
 
 //    Pose2d startPose = new Pose2d(-62.0, -18.0, 0.0);
 
+//
+//    private Pose2d startPose = new Pose2d(-62.5, 34.0, Math.toRadians(-90.0));
+//
+//    private Pose2d depositPose = new Pose2d(-25.0, -8.0, Math.toRadians(-90.0));
+//
+//    private Pose2d mineralPark1 = new Pose2d(-50.0, -10.0, Math.toRadians(-90.0));
+//
+//    private Pose2d mineralFinalPark = new Pose2d(-50.0, -50.0, Math.toRadians(-90.0));
+
 
     private Pose2d startPose = new Pose2d(-62.5, 34.0, 0.0);
 
@@ -28,6 +37,7 @@ public class RightRedWarehouse16 extends LinearOpMode {
     private Pose2d mineralPark1 = new Pose2d(-50.0, -10.0, Math.toRadians(-90.0));
 
     private Pose2d mineralFinalPark = new Pose2d(-50.0, -50.0, Math.toRadians(-90.0));
+
 
     public ElapsedTime launchTime = new ElapsedTime();
 
@@ -66,7 +76,7 @@ public class RightRedWarehouse16 extends LinearOpMode {
                 .build();
 
         Trajectory finalParkInMineral = drive.trajectoryBuilder(parkInMineral1.end())
-                .forward(40)
+                .forward(50)
                 .build();
 
 

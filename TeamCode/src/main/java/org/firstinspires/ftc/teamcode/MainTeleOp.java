@@ -44,6 +44,7 @@ public class MainTeleOp extends LinearOpMode {
             carousel();
             slides();
             holder();
+            robot.joystickMoveCapper(gamepad2);
 
             telemetry.addData("Holder position", robot.holder.getPosition());
 
@@ -54,17 +55,28 @@ public class MainTeleOp extends LinearOpMode {
     }
 
     public void holder() {
+        double servoPosition = robot.holder.getPosition();
+
         if (gamepad2.y) {
-            robot.holderHold();
+            servoPosition = .35;
         }
 
         if (gamepad2.x) {
-            robot.holderDeposit();
+            servoPosition = .75;
+//            robot.holderDeposit();
         }
 
         if (gamepad2.b) {
-            robot.holderNormal();
+            servoPosition = .07;
+//            robot.holderNormal();
         }
+
+        if (gamepad2.left_bumper) {
+            servoPosition = 0;
+//            robot.holderExtraLow();
+        }
+
+        robot.holder.setPosition(servoPosition);
     }
 
 

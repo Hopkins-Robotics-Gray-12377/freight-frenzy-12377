@@ -23,19 +23,19 @@ public class RightBlueWarehouse26 extends LinearOpMode {
 
     private Pose2d startPose = new Pose2d(62.5, 34.0, Math.toRadians(-90.0));
 
-    private Pose2d carouselPose = new Pose2d(55.0, 60.0, Math.toRadians(-90.0));
+    private Pose2d carouselPose = new Pose2d(55.0, 59.0, Math.toRadians(-90.0));
 
     private Pose2d deposit1 = new Pose2d(35.0, 55.0, Math.toRadians(-90.0));
 
-    private Pose2d deposit2 = new Pose2d(0.0, -10.0, Math.toRadians(-90.0));
+    private Pose2d deposit2 = new Pose2d(0.0, -1.0, Math.toRadians(-90.0));
 
-    private Pose2d depositPose = new Pose2d(25.0, -8.0, Math.toRadians(-90.0));
+    private Pose2d depositPose = new Pose2d(27.0, 0.0, Math.toRadians(-90.0));
 
     private Pose2d storagePark = new Pose2d(36.0, 62.5, 0.0);
 
     private Pose2d mineralPark1 = new Pose2d(0.0, -10.0, Math.toRadians(-90.0));
 
-    private Pose2d mineralPark2 = new Pose2d(50.0, -10.0, Math.toRadians(-90.0));
+    private Pose2d mineralPark2 = new Pose2d(48.0, -10.0, Math.toRadians(-90.0));
 
     private Pose2d mineralFinalPark = new Pose2d(50.0, -50.0, Math.toRadians(-90.0));
 
@@ -45,6 +45,7 @@ public class RightBlueWarehouse26 extends LinearOpMode {
         Start,
         Duck,
         Deposit1,
+        Deposit2,
         Deposit,
         StoragePark,
         MineralPark1,
@@ -84,7 +85,7 @@ public class RightBlueWarehouse26 extends LinearOpMode {
                 .build();
 
         Trajectory finalParkInMineral = drive.trajectoryBuilder(parkInMineral1.end())
-                .forward(40)
+                .forward(50)
                 .build();
 
 
@@ -98,6 +99,7 @@ public class RightBlueWarehouse26 extends LinearOpMode {
 
         if (opModeIsActive()) {
             currentLeftRedState = LeftRed.Start;
+            robo.autoRaiseSlidesALittle();
             drive.followTrajectoryAsync(Duck);
 
             while (opModeIsActive() && !isStopRequested()) {
@@ -122,6 +124,16 @@ public class RightBlueWarehouse26 extends LinearOpMode {
                         if (!drive.isBusy()) {
                             drive.followTrajectoryAsync(Deposit1);
                             robo.carousel.setPower(0);
+                            currentLeftRedState = LeftRed.Deposit2;
+
+                        }
+
+                        break;
+
+                    case Deposit2:
+
+                        if (!drive.isBusy()) {
+                            drive.followTrajectoryAsync(deposit);
                             currentLeftRedState = LeftRed.Deposit;
 
                         }
@@ -144,7 +156,7 @@ public class RightBlueWarehouse26 extends LinearOpMode {
                     case MineralPark1:
 
                         if (!drive.isBusy()) {
-                            robo.autoLowerSlides();
+                            robo.autoLowerSlidesALittle();
                             drive.followTrajectoryAsync(parkInMineral1);
                             currentLeftRedState = LeftRed.MineralParkFinal;
                         }
@@ -163,6 +175,7 @@ public class RightBlueWarehouse26 extends LinearOpMode {
                         break;
 
                     case Park:
+                        robo.autoLowerSlides();
                         break;
 
 
