@@ -16,13 +16,13 @@ public class StatesRightBlueAuto extends LinearOpMode {
     Pose2d startPose = new Pose2d(-30, 62, Math.toRadians(90));
 
     //    Pose2d startDepositInter = new Pose2d(-25, -60, Math.toRadians(-90));
-    Pose2d depositPose = new Pose2d(-15, 43, Math.toRadians(90));
+    Pose2d depositPose = new Pose2d(-7, 40, Math.toRadians(90));
 
     Pose2d duck1Pose = new Pose2d(-25, 60, Math.toRadians(90));
     Pose2d carouselPose1 = new Pose2d(-25, 60, Math.toRadians(0));
-    Pose2d carouselPose2 = new Pose2d(-58, 58, Math.toRadians(0));
+    Pose2d carouselPose2 = new Pose2d(-55, 55, Math.toRadians(0));
 
-    Pose2d storagePark = new Pose2d(-62, 36, Math.toRadians(0));
+    Pose2d storagePark = new Pose2d(-62, 30, Math.toRadians(0));
 
     public ElapsedTime launchTime = new ElapsedTime();
 
@@ -51,10 +51,10 @@ public class StatesRightBlueAuto extends LinearOpMode {
 
         // Left Red
         Trajectory startDepositInter = drive.trajectoryBuilder(startPose)
-                .lineToSplineHeading(new Pose2d(-25, 60, Math.toRadians(90)))
+                .lineToSplineHeading(new Pose2d(-20, 60, Math.toRadians(90)))
                 .build();
 
-        Trajectory Deposit = drive.trajectoryBuilder(new Pose2d(-25, 60, Math.toRadians(90)))
+        Trajectory Deposit = drive.trajectoryBuilder(new Pose2d(-20, 60, Math.toRadians(90)))
                 .lineToSplineHeading(depositPose)
                 .build();
 
@@ -76,7 +76,7 @@ public class StatesRightBlueAuto extends LinearOpMode {
         pipeline = new Gobiidae();
         pipeline.setup(hardwareMap);
 
-        sleep(2000);
+        sleep(500);
 
         while (!opModeIsActive()) {
 
@@ -97,7 +97,7 @@ public class StatesRightBlueAuto extends LinearOpMode {
 
             int results = pipeline.getAnalysis();
 
-            sleep(1000);
+//            sleep(1000);
 
             RedDepot currState = RedDepot.Start;
             drive.followTrajectoryAsync(startDepositInter);
@@ -122,15 +122,20 @@ public class StatesRightBlueAuto extends LinearOpMode {
                     case StartDepositInter:
 
                         if (!drive.isBusy()) {
-                            if (results == 1) {
-                                robo.lowDeposit();
-                            } else if (results == 2) {
-                                robo.middleDeposit();
-                            } else {
-                                robo.highDeposit();
-                            }
+//                            if (results == 1) {
+//                                robo.lowDeposit();
+//
+//                            } else if (results == 2) {
+//                                robo.middleDeposit();
+//                            } else {
+//                                robo.highDeposit();
+//                            }
+                            robo.highDeposit();
+
 
                             sleep(3000);
+
+                            robo.autoLowerSlides();
 
                             currState = RedDepot.Duck1;
                         }
@@ -139,7 +144,9 @@ public class StatesRightBlueAuto extends LinearOpMode {
 
                     case Duck1:
                         if (!drive.isBusy()) {
-                            robo.autoLowerSlides();
+
+                            robo.autoRaiseSlidesALittle();
+
                             drive.followTrajectoryAsync(Duck1);
 
                             currState = RedDepot.Duck2;
@@ -170,6 +177,7 @@ public class StatesRightBlueAuto extends LinearOpMode {
 
                         if (!drive.isBusy()) {
                             drive.followTrajectoryAsync(StoragePark);
+                            robo.autoLowerSlides();
 
                             currState = RedDepot.Park;
                         }

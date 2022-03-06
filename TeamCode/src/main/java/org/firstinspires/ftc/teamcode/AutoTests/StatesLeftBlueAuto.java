@@ -17,7 +17,7 @@ public class StatesLeftBlueAuto extends LinearOpMode {
     Pose2d startPose = new Pose2d(22, 62, Math.toRadians(90));
 
     //    Pose2d startDepositInter = new Pose2d(-25, -60, Math.toRadians(-90));
-    Pose2d depositPose = new Pose2d(-1, 43, Math.toRadians(90));
+    Pose2d depositPose = new Pose2d(-1, 44, Math.toRadians(90));
 
     Pose2d duck1Pose = new Pose2d(-25, 60, Math.toRadians(90));
     Pose2d warehousePark1 = new Pose2d(9, 60, Math.toRadians(0));
@@ -73,7 +73,7 @@ public class StatesLeftBlueAuto extends LinearOpMode {
         pipeline = new Gobiidae();
         pipeline.setup(hardwareMap);
 
-        sleep(2000);
+        sleep(500);
 
         while (!opModeIsActive()) {
 
@@ -94,7 +94,7 @@ public class StatesLeftBlueAuto extends LinearOpMode {
 
             int results = pipeline.getAnalysis();
 
-            sleep(1000);
+//            sleep(1000);
 
             RedDepot currState = RedDepot.Start;
             drive.followTrajectoryAsync(startDepositInter);

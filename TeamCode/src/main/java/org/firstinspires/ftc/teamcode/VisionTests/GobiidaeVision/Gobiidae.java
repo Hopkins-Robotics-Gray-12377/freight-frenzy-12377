@@ -78,10 +78,10 @@ public class Gobiidae {
          * The core values which define the location and size of the sample regions
          * If you want to enlarge or reduce the size of the regions, it should be done here.
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(230, 100);
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(50, 100);
-        static final int REGION_WIDTH = 40;
-        static final int REGION_HEIGHT = 40;
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(220, 100);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(40, 100);
+        static final int REGION_WIDTH = 60;
+        static final int REGION_HEIGHT = 60;
 
         /*
          * Points which actually define the sample region rectangles, derived from above values

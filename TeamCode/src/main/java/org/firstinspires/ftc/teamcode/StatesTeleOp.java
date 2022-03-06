@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Bot;
 import org.firstinspires.ftc.teamcode.ToggleMap;
 import org.firstinspires.ftc.teamcode.UseMap;
 
-@TeleOp(name = "AStatesTeleOp")
+@TeleOp(name = "AStatesTeleOpStudio")
 public class StatesTeleOp extends LinearOpMode {
     Bot robot = new Bot();
 
@@ -44,7 +44,8 @@ public class StatesTeleOp extends LinearOpMode {
             carousel();
             slides();
             holder();
-            robot.joystickMoveCapper(gamepad2);
+            joystickMoveCapper();
+//            robot.joystickMoveCapper(gamepad2);
 
             telemetry.addData("Holder position", robot.holder.getPosition());
 
@@ -52,6 +53,12 @@ public class StatesTeleOp extends LinearOpMode {
 
             updateKeys();
         }
+    }
+
+    public void joystickMoveCapper() {
+//        if (toggleMap2.dpad_right) {
+        robot.capper.setPosition(robot.capper.getPosition() + (-gamepad2.left_stick_y)/1000);
+//        }
     }
 
     public void holder() {

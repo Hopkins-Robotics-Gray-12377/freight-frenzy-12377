@@ -297,7 +297,7 @@ public class Bot {
     }
 
     public void autoLowerSlides() {
-        holderNormal();
+        holder.setPosition(0);
 
         while (slides.getCurrentPosition() > initialSlidePos) {
             slides.setPower(-.1);

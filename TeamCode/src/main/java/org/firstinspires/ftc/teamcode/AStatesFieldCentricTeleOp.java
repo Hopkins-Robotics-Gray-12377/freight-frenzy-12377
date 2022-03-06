@@ -31,7 +31,7 @@ public class AStatesFieldCentricTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot.autoInit(hardwareMap);
         robot.imu();
-        robot.runWithoutEncoderDrive();
+//        robot.runWithoutEncodxerDrive();
 
         // Initialize SampleMecanumDrive
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -96,7 +96,7 @@ public class AStatesFieldCentricTeleOp extends LinearOpMode {
             carousel();
             slides();
             holder();
-            robot.joystickMoveCapper(gamepad2);
+            joystickMoveCapper();
 
             telemetry.addData("Holder position", robot.holder.getPosition());
 
@@ -106,15 +106,20 @@ public class AStatesFieldCentricTeleOp extends LinearOpMode {
         }
     }
 
+    public void joystickMoveCapper() {
+//        if (toggleMap2.dpad_right) {
+        robot.capper.setPosition(robot.capper.getPosition() + (-gamepad2.left_stick_y)/1000);
+//        }
+    }
     public void holder() {
         double servoPosition = robot.holder.getPosition();
 
         if (gamepad2.y) {
-            servoPosition = .35;
+            servoPosition = .25;
         }
 
         if (gamepad2.x) {
-            servoPosition = .75;
+            servoPosition = .65;
 //            robot.holderDeposit();
         }
 
